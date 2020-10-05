@@ -5,7 +5,6 @@ export interface Handler {
 }
 
 export interface RouterOptions {
-  base?: string;
   on404?: Handler;
 }
 
@@ -30,19 +29,13 @@ function cleanP(p: string): string {
 // Router once mounted will listen to history events and dispatch them to the
 // registered handlers.
 export default class Router {
-  private base: string;
   private history = history;
   private window = window;
   private on404?: Handler;
   private routes: Route[] = [];
 
-  constructor({ base, on404 }: RouterOptions = {}) {
-    this.base = base ?? window.location.href;
+  constructor({ on404 }: RouterOptions = {}) {
     this.on404 = on404;
-
-    if (this.base.includes('#')) {
-      throw new Error('base cannot include a #');
-    }
   }
 
   // Navigates to the specified hash. This is a minor convenience over the built
@@ -52,9 +45,8 @@ export default class Router {
     { replace, title, data }: GoOptions = { replace: false },
   ): void {
     hash = cleanP(hash);
-    const url = `${this.base}#${hash}`;
     const method = replace ? 'replaceState' : 'pushState';
-    this.history[method](data, title ?? document.title, url);
+    this.history[method](data, title ?? document.title, `#${hash}`);
     this.dispatch(hash);
   }
 
