@@ -10,6 +10,7 @@ QUnit.test('Test It All', async (assert) => {
       assert.deepEqual(params, {}, 'empty params');
       assert.deepEqual(hash, '/from-404', 'the unknown path');
       unmount();
+      window.location.hash = '';
       done();
     },
   });
@@ -22,14 +23,22 @@ QUnit.test('Test It All', async (assert) => {
     document.title = 'Test: Click';
     assert.deepEqual(params, { answer: '42' }, 'the answer');
     assert.deepEqual(hash, '/from-a-click/42', 'the path from the href');
-    setTimeout(() => {
-      router.go('/from-go/43');
-    }, 100);
+    router.go('/from-go/43');
   });
   router.on('/from-go/:answer', (params, hash) => {
     document.title = 'Test: Go';
     assert.deepEqual(params, { answer: '43' }, 'the answer');
     assert.deepEqual(hash, '/from-go/43', 'the path from go');
+    router.go('/from-go-with-query/44?a=1');
+  });
+  router.on('/from-go-with-query/:answer', (params, hash) => {
+    document.title = 'Test: Go With Query';
+    assert.deepEqual(params, { answer: '44' }, 'the answer');
+    assert.deepEqual(
+      hash,
+      '/from-go-with-query/44',
+      'the path from go without query',
+    );
     router.go('/from-404');
   });
   unmount = router.mount();

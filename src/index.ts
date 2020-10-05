@@ -20,9 +20,15 @@ interface Route {
   pattern: RegExp;
 }
 
-function cleanP(p: string): string {
+function cleanP(p: string, dropQuery = false): string {
   p = p.startsWith('#') ? p.slice(1) : p;
   p = p.startsWith('/') ? p : `/${p}`;
+  if (dropQuery) {
+    const qmark = p.indexOf('?');
+    if (qmark > -1) {
+      p = p.slice(0, qmark);
+    }
+  }
   return p;
 }
 
@@ -65,7 +71,7 @@ export default class Router {
   // Dispatch the handler for the given hash (or the current one if
   // unspecified).
   dispatch(hash = window.location.hash): void {
-    hash = cleanP(hash);
+    hash = cleanP(hash, true);
     for (let i = 0; i < this.routes.length; i++) {
       const route = this.routes[i];
       const matches = route.pattern.exec(hash);
