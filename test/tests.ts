@@ -39,6 +39,8 @@ QUnit.test('Test It All', async (assert) => {
       '/from-go-with-query/44',
       'the path from go without query',
     );
+    // this does nothing since we're already here
+    router.go(location.hash);
     router.go('/from-404');
   });
   unmount = router.mount();

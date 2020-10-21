@@ -12,6 +12,7 @@ export interface GoOptions {
   replace?: boolean;
   title?: string;
   data?: unknown;
+  force?: boolean;
 }
 
 interface Route {
@@ -48,11 +49,15 @@ export default class Router {
   // in pushState and replaceState methods.
   go(
     hash: string,
-    { replace, title, data }: GoOptions = { replace: false },
+    { replace, title, data, force }: GoOptions = { replace: false },
   ): void {
     hash = cleanP(hash);
+    const hashP = `#${hash}`;
+    if (!force && this.window.location.hash === hashP) {
+      return;
+    }
     const method = replace ? 'replaceState' : 'pushState';
-    this.history[method](data, title ?? document.title, `#${hash}`);
+    this.history[method](data, title ?? document.title, hashP);
     this.dispatch(hash);
   }
 
