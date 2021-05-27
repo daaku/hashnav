@@ -1,4 +1,4 @@
-import convert from 'regexparam';
+import { parse } from 'regexparam';
 
 export interface Handler {
   (params: Record<string, string>, hash: string): void;
@@ -67,7 +67,7 @@ export default class Router {
       throw new Error('pattern cannot include a #');
     }
     this.routes.push({
-      ...convert(pattern),
+      ...parse(pattern),
       handler,
     });
     return this;
