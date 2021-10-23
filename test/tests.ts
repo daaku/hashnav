@@ -44,5 +44,6 @@ QUnit.test('Test It All', async (assert) => {
     router.go('/from-404');
   });
   unmount = router.mount();
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   (document.querySelector('#start-it') as HTMLAnchorElement)!.click();
 });
