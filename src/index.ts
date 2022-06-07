@@ -21,17 +21,11 @@ interface Route {
   pattern: RegExp;
 }
 
-function cleanP(p: string, dropQuery = false): string {
-  p = p.startsWith('#') ? p.slice(1) : p;
-  p = p.startsWith('/') ? p : `/${p}`;
-  if (dropQuery) {
-    const qmark = p.indexOf('?');
-    if (qmark > -1) {
-      p = p.slice(0, qmark);
-    }
+const validHash = (hash: string): void => {
+  if (!hash.startsWith('#/')) {
+    throw new Error('hash must begin with #/');
   }
-  return p;
-}
+};
 
 // Router once mounted will listen to history events and dispatch them to the
 // registered handlers.
@@ -51,21 +45,22 @@ export default class Router {
     hash: string,
     { replace, title, data, force }: GoOptions = { replace: false },
   ): void {
-    hash = cleanP(hash);
-    const hashP = `#${hash}`;
-    if (!force && this.window.location.hash === hashP) {
+    if (!hash) {
+      hash = '#/';
+    }
+    validHash(hash);
+    if (!force && this.window.location.hash === hash) {
       return;
     }
     const method = replace ? 'replaceState' : 'pushState';
-    this.history[method](data, title ?? document.title, hashP);
+    this.history[method](data, title ?? document.title, hash);
     this.dispatch(hash);
   }
 
   // Register a pattern and the corresponding handler.
   on(pattern: string, handler: Handler): this {
-    if (pattern.includes('#')) {
-      throw new Error('pattern cannot include a #');
-    }
+    validHash(pattern);
+    pattern = pattern.substring(1); // drop leading # for regexparam
     this.routes.push({
       ...parse(pattern),
       handler,
@@ -76,7 +71,13 @@ export default class Router {
   // Dispatch the handler for the given hash (or the current one if
   // unspecified).
   dispatch(hash = window.location.hash): void {
-    hash = cleanP(hash, true);
+    validHash(hash);
+    const original = hash;
+    const qmark = hash.indexOf('?');
+    if (qmark > -1) {
+      hash = hash.slice(0, qmark);
+    }
+    hash = hash.substring(1); // drop leading # for regexparam
     for (let i = 0; i < this.routes.length; i++) {
       const route = this.routes[i];
       const matches = route.pattern.exec(hash);
@@ -87,23 +88,23 @@ export default class Router {
       route.keys.forEach((name, idx) => {
         params[name] = matches[idx + 1];
       });
-      route.handler(params, hash);
+      route.handler(params, original);
       return;
     }
     if (this.on404) {
-      this.on404({}, hash);
+      this.on404({}, original);
     }
   }
 
-  // Mount the Router and start listening to events. Does an initial dispatch to
-  // the given hash (or the current hash if unspecified). Returns a function
-  // that can be invoked to unmount the Router.
+  // Mount the Router and start listening to events. Does an initial replace and
+  // dispatch to the given hash, the current hash if one is set, or falling back
+  // to #/. Returns a function that can be invoked to unmount the Router.
   mount(hash = window.location.hash): { (): void } {
     const run = () => this.dispatch();
     this.window.addEventListener('popstate', run);
     this.window.addEventListener('pushstate', run);
     this.window.addEventListener('replacestate', run);
-    this.dispatch(hash);
+    this.go(hash, { replace: true, force: true });
     return () => {
       this.window.removeEventListener('popstate', run);
       this.window.removeEventListener('pushstate', run);
