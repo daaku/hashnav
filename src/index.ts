@@ -30,8 +30,6 @@ const validHash = (hash: string): void => {
 // Router once mounted will listen to history events and dispatch them to the
 // registered handlers.
 export default class Router {
-  private history = history;
-  private window = window;
   private on404?: Handler;
   private routes: Route[] = [];
 
@@ -49,11 +47,11 @@ export default class Router {
       hash = '#/';
     }
     validHash(hash);
-    if (!force && this.window.location.hash === hash) {
+    if (!force && location.hash === hash) {
       return;
     }
     const method = replace ? 'replaceState' : 'pushState';
-    this.history[method](data, title ?? document.title, hash);
+    history[method](data, title ?? document.title, hash);
     this.dispatch(hash);
   }
 
@@ -70,7 +68,7 @@ export default class Router {
 
   // Dispatch the handler for the given hash (or the current one if
   // unspecified).
-  dispatch(hash = window.location.hash): void {
+  dispatch(hash = location.hash): void {
     validHash(hash);
     const original = hash;
     const qmark = hash.indexOf('?');
@@ -99,16 +97,16 @@ export default class Router {
   // Mount the Router and start listening to events. Does an initial replace and
   // dispatch to the given hash, the current hash if one is set, or falling back
   // to #/. Returns a function that can be invoked to unmount the Router.
-  mount(hash = window.location.hash): { (): void } {
+  mount(hash = location.hash): { (): void } {
     const run = () => this.dispatch();
-    this.window.addEventListener('popstate', run);
-    this.window.addEventListener('pushstate', run);
-    this.window.addEventListener('replacestate', run);
+    window.addEventListener('popstate', run);
+    window.addEventListener('pushstate', run);
+    window.addEventListener('replacestate', run);
     this.go(hash, { replace: true, force: true });
     return () => {
-      this.window.removeEventListener('popstate', run);
-      this.window.removeEventListener('pushstate', run);
-      this.window.removeEventListener('replacestate', run);
+      window.removeEventListener('popstate', run);
+      window.removeEventListener('pushstate', run);
+      window.removeEventListener('replacestate', run);
     };
   }
 }

@@ -10,7 +10,7 @@ QUnit.test('Test It All', async (assert) => {
       assert.deepEqual(params, {}, 'empty params');
       assert.deepEqual(hash, '#/from-404', 'the unknown path');
       unmount();
-      window.location.hash = '';
+      location.hash = '';
       done();
     },
   });
