@@ -24,7 +24,8 @@
     "build:test": "esbuild --bundle --sourcemap --define:process.env.NODE_ENV=\\\"production\\\" --outdir=dist/bundle test/tests.ts",
     "test": "npm run build:test && qunit-puppeteer",
     "build": "run-p check:lint test build:js",
-    "deploy": "npm run build && npm publish --access=public"
+    "deploy": "npm run build && npm publish --access=public",
+    "prepare": "npm run build:js"
   },
   "keywords": [
     "hash",
