@@ -1,4 +1,4 @@
-import Router from '../src';
+import Router from '../src/index.js';
 
 QUnit.test('Test It All', async (assert) => {
   const done = assert.async();

@@ -4,9 +4,18 @@
   "version": "2.1.0",
   "description": "Modern History API enabled hash based navigation.",
   "repository": "git@github.com:daaku/hashnav",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "license": "MIT",
   "prettier": "prettier-config-daaku",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
+  },
+  "eslintConfig": {
+    "extends": "@daaku"
+  },
   "scripts": {
     "check:types": "tsc --noEmit",
     "check:lint": "eslint --fix --ignore-pattern dist .",
@@ -22,7 +31,6 @@
     "history",
     "navigation"
   ],
-  "license": "MIT",
   "devDependencies": {
     "@daaku/eslint-config": "^4.0.0",
     "@daaku/qunit-puppeteer": "^2.0.0",
@@ -35,6 +43,6 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "regexparam": "^2.0.0"
+    "regexparam": "https://github.com/daaku/regexparam#75c684a"
   }
 }
