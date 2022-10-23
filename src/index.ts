@@ -22,7 +22,7 @@ interface Route {
 }
 
 const validHash = (hash: string): void => {
-  if (!hash.startsWith('#/')) {
+  if (!hash.startsWith('#/') && hash !== '') {
     throw new Error('hash must begin with #/')
   }
 }
@@ -43,9 +43,6 @@ export default class Router {
     hash: string,
     { replace, title, data, force }: GoOptions = { replace: false },
   ): void {
-    if (!hash) {
-      hash = '#/'
-    }
     validHash(hash)
     if (!force && location.hash === hash) {
       return
