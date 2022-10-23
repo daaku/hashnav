@@ -97,13 +97,7 @@ export default class Router {
   mount(hash = location.hash): { (): void } {
     const run = () => this.dispatch()
     window.addEventListener('popstate', run)
-    window.addEventListener('pushstate', run)
-    window.addEventListener('replacestate', run)
     this.go(hash, { replace: true, force: true })
-    return () => {
-      window.removeEventListener('popstate', run)
-      window.removeEventListener('pushstate', run)
-      window.removeEventListener('replacestate', run)
-    }
+    return () => window.removeEventListener('popstate', run)
   }
 }
