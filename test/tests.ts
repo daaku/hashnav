@@ -14,10 +14,10 @@ QUnit.test('Test It All', async assert => {
       done()
     },
   })
-  router.on('', (params, hash) => {
+  router.on('#/', (params, hash) => {
     document.title = 'Test: Home'
     assert.deepEqual(params, {}, 'empty params')
-    assert.deepEqual(hash, '', 'the root path')
+    assert.deepEqual(hash, '#/', 'the root path')
   })
   router.on('#/from-a-click/:answer', (params, hash) => {
     document.title = 'Test: Click'
