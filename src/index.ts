@@ -30,11 +30,11 @@ const validHash = (hash: string): void => {
 // Router once mounted will listen to history events and dispatch them to the
 // registered handlers.
 export default class Router {
-  private on404?: Handler
-  private routes: Route[] = []
+  #on404?: Handler
+  #routes: Route[] = []
 
   constructor({ on404 }: RouterOptions = {}) {
-    this.on404 = on404
+    this.#on404 = on404
   }
 
   // Navigates to the specified hash. This is a minor convenience over the built
@@ -56,7 +56,7 @@ export default class Router {
   on(pattern: string, handler: Handler): this {
     validHash(pattern)
     pattern = pattern.substring(1) // drop leading # for regexparam
-    this.routes.push({
+    this.#routes.push({
       ...parse(pattern),
       handler,
     })
@@ -73,8 +73,8 @@ export default class Router {
       hash = hash.slice(0, qmark)
     }
     hash = hash.substring(1) // drop leading # for regexparam
-    for (let i = 0; i < this.routes.length; i++) {
-      const route = this.routes[i]
+    for (let i = 0; i < this.#routes.length; i++) {
+      const route = this.#routes[i]
       const matches = route.pattern.exec(hash)
       if (!matches) {
         continue
@@ -86,8 +86,8 @@ export default class Router {
       route.handler(params, original)
       return
     }
-    if (this.on404) {
-      this.on404({}, original)
+    if (this.#on404) {
+      this.#on404({}, original)
     }
   }
 
