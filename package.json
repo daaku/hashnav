@@ -1,7 +1,7 @@
 {
   "name": "@daaku/hashnav",
   "author": "Naitik Shah <n@daaku.org>",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Modern History API enabled hash based navigation.",
   "repository": "git@github.com:daaku/hashnav",
   "license": "MIT",
