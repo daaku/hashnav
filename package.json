@@ -3,7 +3,10 @@
   "author": "Naitik Shah <n@daaku.org>",
   "version": "5.2.0",
   "description": "Modern History API enabled hash based navigation.",
-  "repository": "git@github.com:daaku/hashnav",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/daaku/hashnav.git"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
