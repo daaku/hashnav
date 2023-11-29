@@ -1,9 +1,7 @@
 /.github
 /.vscode
-/bun.lockb
 /coverage
 /dist/*
-/pnpm-lock.yaml
 /src
 /test
 /tsconfig.json
