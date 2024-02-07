@@ -34,7 +34,7 @@
     "navigation"
   ],
   "devDependencies": {
-    "@daaku/qunit-puppeteer": "^3.3.0",
+    "@daaku/qunit-puppeteer": "^4.0.0",
     "@types/qunit": "^2.11.2",
     "c8": "^9.0.0",
     "qunit": "^2.17.2",
