@@ -39,7 +39,7 @@
     "c8": "^10.0.0",
     "qunit": "^2.17.2",
     "typescript": "^5.0.2",
-    "vite": "^5.0.2"
+    "vite": "^6.0.0"
   },
   "dependencies": {
     "regexparam": "3.0.0"
