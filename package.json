@@ -1,7 +1,7 @@
 {
   "name": "@daaku/hashnav",
   "author": "Naitik Shah <n@daaku.org>",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "description": "Modern History API enabled hash based navigation.",
   "repository": {
     "type": "git",
@@ -10,7 +10,10 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": { "import": "./dist/src/index.js", "types": "./dist/src/index.d.ts" }
+    ".": {
+      "import": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
+    }
   },
   "prettier": {
     "arrowParens": "avoid",
@@ -24,7 +27,11 @@
     "prepare": "tsc",
     "dev": "vite"
   },
-  "keywords": ["hash", "history", "navigation"],
+  "keywords": [
+    "hash",
+    "history",
+    "navigation"
+  ],
   "devDependencies": {
     "@daaku/qunit-puppeteer": "^4.1.0",
     "@types/qunit": "^2.19.13",
@@ -33,5 +40,7 @@
     "typescript": "^6.0.2",
     "vite": "^8.0.3"
   },
-  "dependencies": { "regexparam": "3.0.0" }
+  "dependencies": {
+    "regexparam": "3.0.0"
+  }
 }
