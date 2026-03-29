@@ -21,7 +21,6 @@
   "scripts": {
     "test": "vite build && qunit-puppeteer",
     "cover": "npm run test && c8 report",
-    "deploy": "npm run test && npm publish --access=public",
     "prepare": "tsc",
     "dev": "vite"
   },
