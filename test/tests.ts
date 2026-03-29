@@ -1,4 +1,5 @@
 import QUnit from 'qunit'
+/* @ts-expect-error */
 import 'qunit/qunit/qunit.css'
 import Router from '../src/index.js'
 
@@ -48,7 +49,7 @@ QUnit.test('Test It All', async assert => {
     router.go(location.hash)
     router.go('#/from-404')
   })
-  unmount = router.mount()
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  unmount = router
+    .mount() /* eslint-disable @typescript-eslint/no-non-null-assertion */
   ;(document.querySelector('#start-it') as HTMLAnchorElement)!.click()
 })
